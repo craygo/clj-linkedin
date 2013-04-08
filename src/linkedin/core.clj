@@ -7,7 +7,7 @@
           [org.scribe.model Verifier Token Verb OAuthRequest]
           ))
 
-(defn init-service [linkedin-key linkedin-secret callback-url & {:keys [scope]}]
+(defn- init-service [linkedin-key linkedin-secret callback-url & {:keys [scope]}]
   (def service 
     (let [service-builder (doto (ServiceBuilder.)
                             (.provider LinkedInApi)
@@ -19,6 +19,10 @@
       (.build service-builder)))
     (info "init-service service " (type service)))
 
+(defn init-linkedin-service [{:keys [linkedin-key linkedin-secret 
+                                     base-url linkedin-auth-callback-url scope] :as m}]
+  (debug "init-linkedin-service m " m)
+  (init-service linkedin-key linkedin-secret (str base-url linkedin-auth-callback-url) :scope scope))
 
 (defn get-request-token []
   (let [rt (.getRequestToken service)]
@@ -33,6 +37,9 @@
     (if (and oauth_token oauth_verifier)
       (.getAccessToken service rt (Verifier. oauth_verifier)))))
 
+(defn make-access-token [user-token user-secret]
+  (Token. user-token user-secret))
+
 (defn get-url [url access-token]
   (let [request (OAuthRequest. Verb/GET url)]
     (.addHeader request "x-li-format" "json")
@@ -41,5 +48,18 @@
           code (.getCode response)
           headers (.getHeaders response)
           body (.getBody response)]
-      (info "get-url code " code " headers " headers)
+      (debug "get-url code " code " headers " headers)
       (parse-string body true))))
+
+(defn repeated [base-url access-token & {:keys [max-repeats]}]
+  (let [incr 25]
+    (loop [start 0 cnt incr res [] repeats 0]
+      (let [url (str base-url "&start=" start "&count=" cnt)
+            sr (get-url url access-token)
+            data (second (first sr))
+            {:keys [_total values]} data
+            res (concat res values)]
+        (if (or (>= (+ start cnt) _total)
+                (>= repeats max-repeats))
+          res
+          (recur (+ start incr) cnt res (inc repeats)))))))
