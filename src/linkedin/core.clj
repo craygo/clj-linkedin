@@ -16,8 +16,7 @@
                             (.callback callback-url))]
       (if scope
         (.scope service-builder scope))
-      (.build service-builder)))
-    (info "init-service service " (type service)))
+      (.build service-builder))))
 
 (defn init-linkedin-service [{:keys [linkedin-key linkedin-secret 
                                      base-url linkedin-auth-callback-url scope] :as m}]
