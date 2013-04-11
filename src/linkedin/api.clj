@@ -15,7 +15,7 @@
   (lc/repeated (str "http://api.linkedin.com/v1/people-search:(people:" field-selector ")?keywords=" keyword)
             access-token))
 
-(def company-fields "id,name,industries,employee-count-range,locations:(address:(city,country-code))")
+(def company-fields "id,name,industries,employee-count-range,logo-url,square-logo-url,locations:(address:(city,country-code))")
 
 (defn search-companies [access-token name]
   (let [name (ruc/url-encode name)]
