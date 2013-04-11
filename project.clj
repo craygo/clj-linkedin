@@ -1,4 +1,4 @@
-(defproject clj-linkedin "1.0.0-SNAPSHOT"
+(defproject clj-linkedin "0.0.2-SNAPSHOT"
   :description "LinkedIn API library"
   :dependencies [
                  [org.clojure/clojure "1.4.0"]
