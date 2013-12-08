@@ -7,7 +7,6 @@ Uses org.scribe/scribe library for OAuth
 
 ## Usage
 
-FIXME: write
 
 ## License
 

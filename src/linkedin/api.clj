@@ -24,3 +24,6 @@
 
 (defn get-company [access-token id]
   (lc/get-url (str "http://api.linkedin.com/v1/companies/" id ":(" company-fields ")") access-token))
+
+(defn get-current-user [access-token]
+  (lc/get-url (str "http://api.linkedin.com/v1/people/~:" field-selector) access-token))

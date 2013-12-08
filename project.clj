@@ -1,7 +1,7 @@
-(defproject clj-linkedin "0.0.2-SNAPSHOT"
+(defproject clj-linkedin "0.0.3-SNAPSHOT"
   :description "LinkedIn API library"
   :dependencies [
-                 [org.clojure/clojure "1.4.0"]
+                 [org.clojure/clojure "1.5.1"]
                  [org.scribe/scribe "1.3.3"]
                  [lib-noir "0.2.0"]
                  [compojure "1.1.3"]
