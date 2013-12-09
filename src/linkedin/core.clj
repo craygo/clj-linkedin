@@ -50,7 +50,7 @@
       (debug "get-url code " code " headers " headers)
       (parse-string body true))))
 
-(defn repeated [base-url access-token & {:keys [max-repeats]}]
+(defn repeated [base-url access-token & {:keys [max-repeats] :or {max-repeats 10}}]
   (let [incr 25]
     (loop [start 0 cnt incr res [] repeats 0]
       (let [url (str base-url "&start=" start "&count=" cnt)
